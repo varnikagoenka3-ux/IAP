@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ALGO-OS 98</title>
+<meta name="description" content="Introduction to Algorithm &amp; Programming project: Compound Interest, Kaprekar Number and Mobile Data Usage on a retro desktop.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Press+Start+2P&family=VT323&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ============ BOOT SCREEN ============ -->
+<div id="boot" class="boot" aria-label="ALGO-OS boot screen">
+  <div class="crt-case">
+    <div class="crt-screen" id="bootScreen">
+      <div class="boot-log" id="bootLog" aria-live="polite"></div>
+      <div class="loadbar" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="loadBar">
+        <div class="loadbar-fill" id="loadFill"></div>
+      </div>
+      <div class="boot-row">
+        <p class="boot-prompt">C:\ALGO&gt; <span class="cursor" aria-hidden="true"></span></p>
+        <span class="boot-pct" id="bootPct">000%</span>
+      </div>
+      <div class="boot-actions">
+        <button id="pressStart" class="pxbtn pxbtn--pink pxbtn--big" type="button">PRESS START</button>
+        <span class="boot-hint">or press <kbd>Enter</kbd></span>
+      </div>
+    </div>
+    <div class="crt-chin" aria-hidden="true">
+      <span class="chin-badge">ALGO-OS 98</span>
+      <span class="chin-vents"></span>
+      <span class="chin-knob"></span><span class="chin-knob"></span>
+      <span class="chin-led"></span>
+    </div>
+  </div>
+  <button id="skipBoot" class="skip" type="button">SKIP BOOT &#9656;&#9656;</button>
+</div>
+
+<!-- ============ DESKTOP ============ -->
+<div id="desktop" class="desktop" hidden>
+  <main class="workspace" id="workspace">
+    <h1 class="sr-only">ALGO-OS 98 desktop: Introduction to Algorithm and Programming project</h1>
+    <canvas id="wallpaper" class="wallpaper" aria-hidden="true"></canvas>
+    <div class="floor" aria-hidden="true"></div>
+
+    <nav class="icons dock" id="icons" aria-label="Programs"></nav>
+    <nav class="desk-files" id="files" aria-label="Files"></nav>
+
+    <section class="tips" id="tips" aria-labelledby="tipsTitle">
+      <div class="tips-bar"><span id="tipsTitle">TIPS.EXE</span><span class="tips-stripes" aria-hidden="true"></span>
+        <button type="button" class="wbtn wbtn--close" id="tipClose" aria-label="Close tips" title="Close"><svg viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true" fill="currentColor"><path d="M0 0h2v1h1v1h2V1h1V0h2v2H7v1H6v2h1v1h1v2H6V7H5V6H3v1H2v1H0V6h1V5h1V3H1V2H0z"/></svg></button></div>
+      <div class="tips-body">
+        <span class="tips-bulb" id="tipsBulb" aria-hidden="true"></span>
+        <div class="tips-text"><p class="tips-kicker">DID YOU KNOW?</p><p id="tipText" aria-live="polite"></p></div>
+      </div>
+      <div class="tips-foot"><span id="tipCount" class="tips-count"></span>
+        <button type="button" class="pxbtn pxbtn--sm pxbtn--ghost" id="tipPrev">&#9666; PREV</button>
+        <button type="button" class="pxbtn pxbtn--sm" id="tipNext">NEXT &#9656;</button></div>
+    </section>
+
+    <div class="desk-dialogs">
+      <section class="plaque" aria-label="Project information">
+        <div class="plaque-bar"><span>PROJECT.INF</span><span class="plaque-stripes" aria-hidden="true"></span></div>
+        <div class="plaque-body">
+          <p class="plaque-kicker">Introduction to Algorithm &amp; Programming</p>
+          <p class="plaque-title">Programming Project: Pseudocode (Corrected)</p>
+          <p class="plaque-meta">@Varnika &middot; Oct 28, 2026</p>
+          <p class="plaque-tip">Open a program from the PROGRAMS dock to read its problem, pseudocode, explanation and flowchart.</p>
+        </div>
+      </section>
+      <section class="syslog" aria-labelledby="sysTitle">
+        <div class="syslog-bar"><span id="sysTitle">SYSMON.EXE</span></div>
+        <div class="syslog-screen">
+          <p aria-hidden="true">&gt; TASK MONITOR</p>
+          <div id="sysRows" class="sys-rows"></div>
+          <p class="dim" id="sysMem"></p>
+          <p class="dim sys-msg" aria-hidden="true"><span id="sysMsg">Compounding annually OK</span><span class="cursor"></span></p>
+        </div>
+      </section>
+    </div>
+
+    <div class="scene">
+      <button type="button" class="floppies has-tip" data-open="project" data-tip="Project disks: opens MY PROJECT" aria-label="Open the My Project folder">
+        <span class="floppy floppy--a"></span><span class="floppy floppy--b"></span><span class="floppy floppy--c"><i>ALGO</i></span>
+      </button>
+      <div class="tower" aria-hidden="true">
+        <span class="tower-badge">ALGO 486</span>
+        <span class="bay"></span><span class="bay bay--floppy"></span>
+        <span class="tower-grill"></span>
+        <span class="tower-leds"><i></i><i></i></span>
+      </div>
+      <div class="wall-crt">
+        <button type="button" class="sticky" data-open="readme" aria-label="New here? Open the Read Me tour">
+          <span class="sticky-head">NEW HERE?</span><span class="sticky-body">Click me for a quick tour</span>
+        </button>
+        <div class="wall-crt-screen">
+          <button type="button" class="wall-crt-glass has-tip" data-open="term" data-tip="Click to open TERMINAL.EXE" aria-label="Open the terminal">
+            <pre id="wallCode" aria-hidden="true"></pre>
+            <span class="wall-status" aria-hidden="true"><span>C:\ALGO&gt; RUN ALL</span><span class="wall-bar"><i></i></span></span>
+          </button>
+        </div>
+        <div class="wall-crt-chin" aria-hidden="true"><span class="wall-brand">LAVTRON 14"</span><span class="wall-btns"><i></i><i></i></span></div>
+        <div class="wall-crt-neck" aria-hidden="true"></div>
+        <div class="wall-crt-foot" aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <div class="bin-slot" id="binSlot"></div>
+
+    <div id="windows"></div>
+  </main>
+
+  <div id="startMenu" class="start-menu" role="menu" aria-label="Start menu" hidden>
+    <div class="start-banner" aria-hidden="true"><span>ALGO-OS <b>98</b></span></div>
+    <div class="start-items" id="startItems"></div>
+  </div>
+
+  <footer class="taskbar">
+    <button id="startBtn" class="start-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="startMenu" aria-label="Start"><span class="start-logo" aria-hidden="true"></span><span class="start-text">START</span></button>
+    <div class="quick" id="quick" aria-label="Quick launch"></div>
+    <div class="tasks" id="tasks" aria-label="Open windows"></div>
+    <div class="tray">
+      <button id="showDesktop" class="tray-btn has-tip tip-up tip-left" type="button" data-tip="Show desktop" aria-label="Show desktop">&#8962;</button>
+      <button id="soundToggle" class="tray-btn tray-btn--snd" type="button" aria-pressed="false" aria-label="Sound effects">&#9834; <span class="snd-state">OFF</span></button>
+      <span class="clock" id="clock"></span>
+    </div>
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
