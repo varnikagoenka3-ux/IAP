@@ -1,27 +1,30 @@
-# ALGO-OS 98
+# ALGO-OS 98 — IAP project WAS E5
 
-Retro-desktop website for the *Introduction to Algorithm & Programming* project
-(Compound Interest, Kaprekar Number, Mobile Data Usage).
+Retro desktop project workspace for the Introduction to Algorithm & Programming project.
 
 ## Run locally
 Open `index.html` in a browser, or serve the folder:
 
-    python3 -m http.server 8000   # then visit http://localhost:8000
+```bash
+python3 -m http.server 8000
+```
+
+Then visit `http://localhost:8000`.
 
 ## Deploy on Netlify
-Drag this folder onto https://app.netlify.com/drop, or connect the repo with
-no build command and publish directory `.`.
+Drag the extracted folder onto Netlify Drop, or connect the repository with no build command and publish directory `.`.
 
 ## Files
-- `index.html` – boot screen, desktop, taskbar
-- `styles.css` – all styling (retro palette, windows, flowchart, responsive rules)
-- `script.js` – content (pseudocode, problems, explanations), flowchart renderer, window manager
+- `index.html` — boot screen, desktop and taskbar.
+- `styles.css` — visual styling, windows, code panels, flowcharts and responsive rules.
+- `script.js` — desktop interactions, six application tabs, supplied pseudocode and Python code, explanations and Try It demonstrations.
+- `assets/flowchart_compound_interest.jpg` — supplied compound-interest flowchart.
+- `assets/flowchart_kaprekar_number.jpg` — supplied Kaprekar flowchart.
+- `assets/flowchart_mobile_data_usage.jpg` — supplied mobile-data flowchart.
 
-Fonts load from Google Fonts; fallbacks are set if offline. Sound is off by default (♪ button in the taskbar tray or Start menu).
+## Application tabs
+Each program contains: Problem, Pseudocode, Code, Explanation, Flowchart and Try it.
 
-## What's on the desktop
-- PROGRAMS dock: Compound Interest, Kaprekar Number, Mobile Data Usage (tabs: Problem, Pseudocode, Explanation, Flowchart, Try it)
-- Files: My Project (folder view), Read Me, Help & Legend, Terminal, Recycle Bin
-- Start menu, quick-launch icons, taskbar buttons for open windows, live SYSMON panel, Tip of the Day
-- Windows drag by the title bar, resize from the corner grip, minimise / enlarge / restore / close
-- The CRT on the desk opens the terminal (type `help`)
+The mobile-data demonstration asks for a month and uses the actual number of days in that month. It asks for a year only for February so it can apply the leap-year rule.
+
+Fonts load from Google Fonts, with local system fallbacks. Sound effects are off by default.
