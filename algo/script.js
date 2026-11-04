@@ -1,5 +1,4 @@
-/* ALGO-OS 98 — boot sequence, desktop, windows, tabs, flowcharts.
-   Content source: "Programming Project: Pseudocode (Corrected)", Oct 28 2026, @Varnika. */
+/* ALGO-OS 98 — boot sequence, desktop, windows, tabs, and EW5 project content. */
 (function () {
   'use strict';
 
@@ -98,75 +97,223 @@
   };
 
   /* ------------------------------------------------------------------
-     Pseudocode (START and STOP added; Kaprekar written by Varnika)
+     Pseudocode and Python code supplied for the EW5 project.
   ------------------------------------------------------------------ */
   var PSEUDO = {
     ci: [
       'START',
-      'FUNCTION calculate_compound_interest(principal, rate, time)',
-      '    IF principal, rate or time is not a number THEN',
-      '        DISPLAY "Error: inputs must be numbers"',
-      '        RETURN NULL',
-      '    END IF',
-      '    IF principal < 0 OR rate < 0 OR time < 0 THEN',
-      '        DISPLAY "Error: inputs cannot be negative"',
-      '        RETURN NULL',
-      '    END IF',
-      '    amount <- principal * (1 + rate / 100) ^ time',
-      '    interest <- amount - principal',
-      '    RETURN interest',
-      'END FUNCTION',
+      'INPUT principal amount',
+      'INPUT annual interest rate',
+      'INPUT time in years',
+      '',
+      'IF principal <= 0',
+      '    DISPLAY "Error: principal must be greater than 0."',
+      'ELSE IF rate < 0',
+      '    DISPLAY "Error: rate cannot be negative."',
+      'ELSE IF time <= 0',
+      '    DISPLAY "Error: time must be greater than 0."',
+      'ELSE',
+      '    CALCULATE amount = principal * (1 + rate / 100) ^ time',
+      '    CALCULATE interest = amount - principal',
+      '    DISPLAY final amount',
+      '    DISPLAY compound interest',
+      'END IF',
       'STOP'
     ],
     kap: [
       'START',
-      '',
       'INPUT n',
       '',
-      'IF n is not an integer OR n <= 0 THEN',
-      '    PRINT "Error: Input must be a positive integer"',
+      'IF n <= 0 OR n % 1 != 0',
+      '    DISPLAY "Error: input must be a positive integer."',
       'ELSE',
-      '    square = n * n',
-      '    digits = number of digits in n',
-      '    divisor = 10 ^ digits',
-      '',
-      '    left = square DIV divisor',
-      '    right = square MOD divisor',
-      '',
-      '    IF left + right == n THEN',
-      '        PRINT n, "is a Kaprekar number"',
+      '    CALCULATE square = n * n',
+      '    COUNT the digits in the square',
+      '    SET i = 1',
+      '    SET isKaprekar = FALSE',
+      '    WHILE i <= digits',
+      '        CALCULATE divider = 10 ^ i',
+      '        CALCULATE left = square // divider',
+      '        CALCULATE right = square % divider',
+      '        IF right > 0 AND left + right == n',
+      '            SET isKaprekar = TRUE',
+      '            SET i = digits + 1  (this stops the loop early)',
+      '        ELSE',
+      '            SET i = i + 1',
+      '        END IF',
+      '    END WHILE',
+      '    IF isKaprekar == TRUE',
+      '        DISPLAY n, "is a Kaprekar number"',
       '    ELSE',
-      '        PRINT n, "is not a Kaprekar number"',
+      '        DISPLAY n, "is not a Kaprekar number"',
       '    END IF',
       'END IF',
-      '',
       'STOP'
     ],
     mob: [
       'START',
-      '    total <- 0',
-      '    FOR day <- 1 TO 7',
-      '        REPEAT',
-      '            INPUT usage',
-      '            IF usage is not a number OR usage < 0 THEN',
-      '                DISPLAY "Error: enter a number of 0 GB or more"',
-      '            END IF',
-      '        UNTIL usage is a number AND usage >= 0',
-      '        total <- total + usage',
-      '    END FOR',
-      '    projected_monthly <- total * 4',
-      '    DISPLAY "Weekly usage: ", total, " GB"',
-      '    DISPLAY "Projected monthly usage: ", projected_monthly, " GB"',
-      '    IF projected_monthly > 20 THEN',
-      '        DISPLAY "Monthly limit may be exceeded"',
+      'SET LIMIT = 20',
+      'INPUT month number',
+      'WHILE month < 1 OR month > 12 OR month % 1 != 0',
+      '    DISPLAY "Error: month must be a whole number from 1 to 12."',
+      '    INPUT month number',
+      'IF month == 2',
+      '    INPUT year',
+      '    WHILE year < 1 OR year % 1 != 0',
+      '        DISPLAY "Error: year must be a whole number, 1 or more."',
+      '        INPUT year',
+      '    IF year % 400 == 0 OR (year % 4 == 0 AND year % 100 != 0)',
+      '        SET days = 29',
       '    ELSE',
-      '        DISPLAY "Monthly limit is not expected to be exceeded"',
-      '    END IF',
+      '        SET days = 28',
+      'ELSE IF month == 4 OR month == 6 OR month == 9 OR month == 11',
+      '    SET days = 30',
+      'ELSE',
+      '    SET days = 31',
+      'SET total = 0',
+      'SET day = 1',
+      'WHILE day <= 7',
+      '    INPUT usage',
+      '    IF usage < 0',
+      '        DISPLAY "Error: usage cannot be negative. Try again."',
+      '    ELSE',
+      '        SET total = total + usage',
+      '        SET day = day + 1',
+      'CALCULATE projected = (total / 7) * days',
+      'DISPLAY "Month has", days, "days"',
+      'DISPLAY "Total weekly usage:", total, "GB"',
+      'DISPLAY "Projected monthly usage:", projected, "GB"',
+      'IF projected > LIMIT',
+      '    DISPLAY "Warning: you may exceed the", LIMIT, "GB limit by about", (projected - LIMIT), "GB."',
+      'ELSE',
+      '    DISPLAY "You are within the", LIMIT, "GB limit."',
+      'END IF',
       'STOP'
     ]
   };
 
-  var TOKEN_RE = /("[^"]*")|(<-)|(\b\d+(?:\.\d+)?\b)|(\b(?:FUNCTION|END|IF|THEN|ELSE|RETURN|DISPLAY|INPUT|FOR|TO|REPEAT|UNTIL|START|STOP|PRINT|DIV|MOD|AND|OR|NULL|true)\b)|([()*\/^+\-<>=,])/g;
+  var PYTHON = {
+    ci: String.raw`# Compound interest
+
+def calculate_compound_interest(principal, rate, time):
+    if principal <= 0:
+        print("Error: principal must be greater than 0.")
+        return
+    if rate < 0:
+        print("Error: rate cannot be negative.")
+        return
+    if time <= 0:
+        print("Error: time must be greater than 0.")
+        return
+    amount = principal * (1 + rate / 100) ** time
+    return amount
+
+
+principal = float(input("Enter principal amount: "))
+rate = float(input("Enter annual interest rate in % (e.g. 5 for 5%): "))
+time = float(input("Enter number of years (decimals allowed, e.g. 2.5): "))
+
+result = calculate_compound_interest(principal, rate, time)
+
+if result is not None:
+    interest = result - principal
+    print("Final amount:", round(result, 2))
+    print("Compound interest:", round(interest, 2))`,
+    kap: String.raw`# Kaprekar number
+
+def count_digits(num):
+    count = 0
+    while num > 0:
+        num = num // 10
+        count = count + 1
+    return count
+
+
+def is_kaprekar(n):
+    square = n * n
+    digits = count_digits(square)
+    i = 1
+    while i <= digits:
+        divider = 10 ** i
+        left = square // divider
+        right = square % divider
+        if right > 0 and left + right == n:
+            return True
+        i = i + 1
+    return False
+
+
+def kaprekar_number(n):
+    if n % 1 != 0 or n <= 0:
+        print("Error: input must be a positive integer.")
+        return
+    n = int(n)
+    if is_kaprekar(n):
+        print(n, "is a Kaprekar number")
+    else:
+        print(n, "is not a Kaprekar number")
+
+
+n = float(input("Enter a number to check: "))
+kaprekar_number(n)`,
+    mob: String.raw`# Data usage calculation
+
+LIMIT = 20  # GB
+
+month = float(input("Enter the month number (1-12): "))
+while month < 1 or month > 12 or month % 1 != 0:
+    print("Error: month must be a whole number from 1 to 12.")
+    month = float(input("Enter the month number (1-12): "))
+month = int(month)
+
+if month == 2:
+    year = float(input("Enter the year (for leap year check): "))
+    while year < 1 or year % 1 != 0:
+        print("Error: year must be a whole number, 1 or more.")
+        year = float(input("Enter the year (for leap year check): "))
+    year = int(year)
+    if year % 400 == 0 or (year % 4 == 0 and year % 100 != 0):
+        days = 29
+    else:
+        days = 28
+elif month == 4 or month == 6 or month == 9 or month == 11:
+    days = 30
+else:
+    days = 31
+
+total = 0
+day = 1
+while day <= 7:
+    usage = float(input("Enter data usage for day " + str(day) + " (in GB): "))
+    if usage < 0:
+        print("Error: usage cannot be negative. Try again.")
+    else:
+        total = total + usage
+        day = day + 1
+
+projected = total / 7 * days
+print("Month has", days, "days")
+print("Total weekly usage:", round(total, 2), "GB")
+print("Projected monthly usage:", round(projected, 2), "GB")
+
+if projected > LIMIT:
+    print("Warning: you may exceed the", LIMIT, "GB limit by about", round(projected - LIMIT, 2), "GB.")
+else:
+    print("You are within the", LIMIT, "GB limit.")`
+  };
+
+  function highlightPython(line) {
+    var out = '', last = 0, re = /(#[^\n]*|"[^"\\]*(?:\\.[^"\\]*)*"|'[^'\\]*(?:\\.[^'\\]*)*'|\b(?:def|if|else|elif|return|while|for|in|and|or|not|True|False|None|print|input|int|float|range)\b|\b\d+(?:\.\d+)?\b|\b[A-Za-z_]\w*(?=\s*\())/g, m;
+    while ((m = re.exec(line))) {
+      out += esc(line.slice(last, m.index));
+      var cls = m[1].charAt(0) === '#' ? 'tk-comment' : (/^["']/.test(m[1]) ? 'tk-s' : (/^\d/.test(m[1]) ? 'tk-n' : (/^(def|if|else|elif|return|while|for|in|and|or|not|True|False|None)$/.test(m[1]) ? 'tk-k' : 'tk-fn')));
+      out += '<span class="' + cls + '">' + esc(m[1]) + '</span>';
+      last = re.lastIndex;
+    }
+    return out + esc(line.slice(last));
+  }
+
+  var TOKEN_RE = /("[^"]*")|(<-)|(\b\d+(?:\.\d+)?\b)|(\b(?:FUNCTION|END|IF|THEN|ELSE|RETURN|DISPLAY|INPUT|FOR|TO|REPEAT|UNTIL|WHILE|START|STOP|PRINT|DIV|MOD|AND|OR|NULL|true|FALSE|TRUE|SET|COUNT|CALCULATE)\b)|([()*\/^+\-<>=,])/g;
   function highlight(line) {
     var out = '', last = 0, m;
     TOKEN_RE.lastIndex = 0;
@@ -180,28 +327,45 @@
   }
 
   /* ------------------------------------------------------------------
-     Reference implementations that mirror the pseudocode,
-     used only to print the worked examples from the document.
+     Reference calculations used by the worked examples and Try it panels.
   ------------------------------------------------------------------ */
   function compoundInterest(principal, rate, time) {
-    var vals = [principal, rate, time];
-    if (vals.some(function (v) { return typeof v !== 'number' || isNaN(v); })) return { error: 'Error: inputs must be numbers' };
-    if (principal < 0 || rate < 0 || time < 0) return { error: 'Error: inputs cannot be negative' };
+    if (typeof principal !== 'number' || !isFinite(principal)) return { error: 'Principal must be a number.' };
+    if (typeof rate !== 'number' || !isFinite(rate)) return { error: 'Rate must be a number.' };
+    if (typeof time !== 'number' || !isFinite(time)) return { error: 'Time must be a number.' };
+    if (principal <= 0) return { error: 'Principal must be greater than 0.' };
+    if (rate < 0) return { error: 'Rate cannot be negative.' };
+    if (time <= 0) return { error: 'Time must be greater than 0.' };
     var amount = principal * Math.pow(1 + rate / 100, time);
     return { amount: amount, interest: amount - principal };
   }
-  function kapCalc(n) {
-    var N = BigInt(n), sq = N * N, digits = N.toString().length, div = 10n ** BigInt(digits);
-    var left = sq / div, right = sq % div;
-    return { n: N, sq: sq, digits: digits, div: div, left: left, right: right, sum: left + right, ok: left + right === N };
+
+  function countDigitsNumber(num) {
+    return String(num).length;
   }
+
+  function kapCalc(n) {
+    var N = BigInt(n), sq = N * N, digits = countDigitsNumber(sq.toString()), rows = [], found = false;
+    for (var i = 1; i <= digits; i++) {
+      var divider = 10n ** BigInt(i);
+      var left = sq / divider;
+      var right = sq % divider;
+      var sum = left + right;
+      var ok = right > 0n && sum === N;
+      rows.push({ i: i, divider: divider, left: left, right: right, sum: sum, ok: ok });
+      if (ok) { found = true; break; }
+    }
+    return { n: N, sq: sq, digits: digits, rows: rows, found: found };
+  }
+
   function kapTrace(n) {
     var k = kapCalc(n);
-    return '<div class="table-wrap"><table class="trace"><caption class="sr-only">Steps for n = ' + n + '</caption>' +
-      '<thead><tr><th>square</th><th>digits</th><th>divisor</th><th>left</th><th>right</th><th>left + right</th><th>check</th></tr></thead><tbody>' +
-      '<tr' + (k.ok ? ' class="hit"' : '') + '><td>' + k.sq + '</td><td>' + k.digits + '</td><td>' + k.div + '</td><td>' + k.left + '</td><td>' + k.right + '</td><td>' + k.sum +
-      '</td><td class="' + (k.ok ? 'yes' : 'no') + '">' + (k.ok ? '&#10003; = ' + n : '&ne; ' + n) + '</td></tr></tbody></table></div>' +
-      '<p class="verdict">n = ' + n + ', so PRINT: ' + n + (k.ok ? ' is a Kaprekar number' : ' is not a Kaprekar number') + '</p>';
+    var rows = k.rows.map(function (r) {
+      return '<tr' + (r.ok ? ' class="hit"' : '') + '><td>' + r.i + '</td><td>' + r.divider + '</td><td>' + r.left + '</td><td>' + r.right + '</td><td>' + r.sum + '</td><td class="' + (r.ok ? 'yes' : 'no') + '">' + (r.ok ? '&#10003; = ' + n : '&ne; ' + n) + '</td></tr>';
+    }).join('');
+    return '<div class="table-wrap"><table class="trace"><caption class="sr-only">Possible splits for ' + n + ' squared</caption>' +
+      '<thead><tr><th>i</th><th>divider</th><th>left</th><th>right</th><th>left + right</th><th>check</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
+      '<p class="verdict">square = ' + k.sq + ', digits = ' + k.digits + ', found = ' + k.found + '. ' + n + (k.found ? ' is a Kaprekar number.' : ' is not a Kaprekar number.') + '</p>';
   }
 
   /* ------------------------------------------------------------------
@@ -405,74 +569,79 @@
   function example(html) { return '<div class="example"><span class="example-tag">EXAMPLE</span><div>' + html + '</div></div>'; }
 
   /* ------------------------------------------------------------------
-     App content
+     App content — aligned with the latest code, pseudocode and flowcharts.
   ------------------------------------------------------------------ */
   var ciEx = compoundInterest(10000, 10, 2);
-  var mobEx = 5.3 * 4;
+  var mobExTotal = 5.3;
+  var mobExDays = 30;
+  var mobExProjected = mobExTotal / 7 * mobExDays;
 
   var APPS = [
     {
       id: 'ci', exe: 'COMPOUND.EXE', name: 'Compound Interest', tone: 'pink',
       problem:
-        '<h3>TASK</h3>' +
-        source('<p>Returns the compound interest (A &minus; P) for annual compounding, or shows an error if any input is invalid.</p>') +
-        '<h3>INPUTS</h3><ul class="chips"><li>principal</li><li>rate</li><li>time</li></ul>' +
-        '<h3>FORMULA</h3><div class="formula"><b>amount</b> &larr; principal &times; (1 + rate / 100)<sup>time</sup><br><b>interest</b> &larr; amount &minus; principal</div>' +
-        '<h3>OUTPUT</h3><p>The interest (A &minus; P). If an input is not a number or is negative, an error message is displayed and the function returns NULL.</p>' +
-        '<h3>EXAMPLE</h3>' + example('<p>P = 10,000, R = 10, T = 2 gives A = 12,100 and interest = 2,100.</p>'),
+        '<h3>PROBLEM STATEMENT</h3>' +
+        '<p>Write a function called <code>calculate_compound_interest</code>. It takes principal, rate and time as inputs, assumes annual compounding, and calculates the final amount using <code>A = P(1 + R/100)^T</code>. The program then displays the final amount and compound interest. Principal and time must be greater than 0; rate cannot be negative.</p>' +
+        '<h3>INPUTS</h3><ul class="chips"><li>principal</li><li>annual rate (%)</li><li>time (years)</li></ul>' +
+        '<h3>FORMULAS</h3><div class="formula"><b>amount</b> &larr; principal &times; (1 + rate / 100)<sup>time</sup><br><b>interest</b> &larr; amount &minus; principal</div>' +
+        '<h3>OUTPUT</h3><p>Final amount and compound interest, each rounded to 2 decimal places. Invalid principal, rate or time produces its corresponding error message.</p>' +
+        '<h3>EXAMPLE</h3>' + example('<p>P = 10,000, R = 10%, T = 2 years gives A = 12,100 and compound interest = 2,100.</p>'),
       explain:
-        '<h3>WHY THE FUNCTION RETURNS A &minus; P</h3>' +
-        source('<p>Note: the formula gives A, and compound interest is A &minus; P, so the function returns A &minus; P.</p>') +
-        '<h3>ORDER OF CHECKS</h3><ol>' +
-        '<li>If any of <code>principal</code>, <code>rate</code> or <code>time</code> is not a number, display <em>Error: inputs must be numbers</em> and return NULL.</li>' +
-        '<li>If any of them is below 0, display <em>Error: inputs cannot be negative</em> and return NULL.</li>' +
-        '<li>Otherwise work out <code>amount</code>, subtract <code>principal</code>, and return the result.</li></ol>' +
-        '<p>Because each error branch returns straight away, the formula only runs on valid input.</p>' +
+        '<h3>VALIDATION ORDER</h3><ol>' +
+        '<li><code>principal</code> must be greater than 0. A zero or negative principal is rejected.</li>' +
+        '<li><code>rate</code> cannot be negative. A rate of 0% is allowed.</li>' +
+        '<li><code>time</code> must be greater than 0. Decimal years are allowed, such as 2.5.</li></ol>' +
+        '<h3>CALCULATION</h3><p>The function calculates and returns the final amount <code>A</code>. After the function returns, the main program subtracts the principal to obtain compound interest: <code>interest = result - principal</code>.</p>' +
         '<h3>WORKED EXAMPLE</h3>' +
         '<pre class="calc">amount   = 10,000 &times; (1 + 10 / 100)^2\n         = 10,000 &times; 1.1^2\n         = 10,000 &times; 1.21\n         = ' + fmt(ciEx.amount) + '\ninterest = ' + fmt(ciEx.amount) + ' &minus; 10,000\n         = ' + fmt(ciEx.interest) + '</pre>' +
-        '<p>This matches the document: A = 12,100 and interest = 2,100.</p>',
-      chartNote: 'Each error branch displays its message, then both reach the same RETURN NULL step.'
+        '<p>The returned amount is 12,100. The displayed compound interest is 2,100.</p>',
+      chartNote: 'The flowchart checks principal, rate and time in sequence. Each invalid branch displays its specific error and joins the STOP path.'
     },
     {
       id: 'kap', exe: 'KAPREKAR.EXE', name: 'Kaprekar Number', tone: 'lav',
       problem:
-        '<h3>TASK</h3>' +
-        '<p>Squares n, splits the square into a left part and a right part, and adds the two parts. If left + right = n, then n is a Kaprekar number.</p>' +
-        '<h3>INPUT</h3><ul class="chips"><li>n</li></ul>' +
-        '<h3>OUTPUT</h3><p>Prints <code>n is a Kaprekar number</code> or <code>n is not a Kaprekar number</code>. If n is not a positive integer, it prints an error.</p>' +
+        '<h3>PROBLEM STATEMENT</h3>' +
+        '<p>Write a function called <code>kaprekar_number</code> that takes a positive integer <code>n</code>. A number is a Kaprekar number if its square can be split into two parts that add up to the original number. Display the appropriate message, or an error if the input is not a positive integer.</p>' +
+        '<h3>INPUT</h3><ul class="chips"><li>n (positive integer)</li></ul>' +
+        '<h3>OUTPUT</h3><p><code>n is a Kaprekar number</code> or <code>n is not a Kaprekar number</code>.</p>' +
         '<h3>EXAMPLES</h3>' +
-        example('<p>n = 45, 45&sup2; = 2025, split 20 | 25, 20 + 25 = 45, so it is a Kaprekar number.</p>') +
-        example('<p>n = 297, 297&sup2; = 88209, split 88 | 209, 88 + 209 = 297, so it is a Kaprekar number.</p>'),
+        example('<p>45&sup2; = 2025. Split 20 | 25. Since 20 + 25 = 45, 45 is a Kaprekar number.</p>') +
+        example('<p>4879&sup2; = 23804641. Split 238 | 04641. Since 238 + 4641 = 4879, 4879 is a Kaprekar number.</p>'),
       explain:
-        '<h3>HOW THE SPLIT WORKS</h3>' +
-        '<p><code>digits</code> is the number of digits in n, and <code>divisor</code> is 10 raised to that. <code>left</code> is the square DIV divisor (the front of the square) and <code>right</code> is the square MOD divisor (the last <code>digits</code> digits).</p>' +
+        '<h3>HOW THE ALGORITHM WORKS</h3><ol>' +
+        '<li>Reject the input if it is not a positive integer.</li>' +
+        '<li>Square <code>n</code> and count the digits in the square.</li>' +
+        '<li>Try successive right-part lengths by increasing <code>i</code> from 1. Set <code>divider = 10 ** i</code>.</li>' +
+        '<li>Calculate <code>left = square // divider</code> and <code>right = square % divider</code>.</li>' +
+        '<li>If <code>right &gt; 0</code> and <code>left + right == n</code>, mark it as a Kaprekar number and stop checking further splits.</li></ol>' +
         '<h3>TRACE: n = 45</h3>' + kapTrace(45) +
-        '<h3>TRACE: n = 297</h3>' + kapTrace(297) +
-        '<h3>TRACE: n = 10 (not Kaprekar)</h3>' + kapTrace(10),
-      chartNote: ''
+        '<h3>TRACE: n = 4879</h3>' + kapTrace(4879) +
+        '<h3>TRACE: n = 10</h3>' + kapTrace(10) +
+        '<p>The positive-right-part check prevents a split with a zero right part from being accepted.</p>',
+      chartNote: 'The flowchart follows the helper functions: count the square digits, test each divisor split, and stop when a valid Kaprekar split is found.'
     },
     {
       id: 'mob', exe: 'MOBDATA.EXE', name: 'Mobile Data Usage', tone: 'cyan',
       problem:
-        '<h3>TASK</h3>' +
-        source('<p>Takes 7 daily values, adds them into the weekly total, and projects the month as 4 weeks of that usage against the 20 GB limit.</p>') +
-        '<h3>INPUT</h3><ul class="chips"><li>usage &times; 7 days (GB)</li></ul>' +
-        '<h3>OUTPUT</h3><ul><li>Weekly usage in GB</li><li>Projected monthly usage in GB</li><li><code>Monthly limit may be exceeded</code> or <code>Monthly limit is not expected to be exceeded</code></li></ul>' +
-        '<h3>LIMIT</h3><div class="formula"><b>projected_monthly</b> &larr; total &times; 4 &nbsp;&nbsp;vs&nbsp;&nbsp; 20 GB</div>' +
-        '<h3>EXAMPLE</h3>' + example('<p>A weekly total of 5.3 GB gives 5.3 &times; 4 = 21.2 GB, which is above 20, so the limit may be exceeded.</p>'),
+        '<h3>PROBLEM STATEMENT</h3>' +
+        '<p>A mobile user has a monthly data limit of 20 GB. Accept data usage for seven days, calculate the total weekly usage, and estimate whether the monthly limit may be exceeded. This version asks for the month and, for February, the year so the projection uses the actual number of days in that month.</p>' +
+        '<h3>INPUTS</h3><ul class="chips"><li>month (1–12)</li><li>year (February only)</li><li>7 daily usage values (GB)</li></ul>' +
+        '<h3>PROJECTION</h3><div class="formula"><b>average daily usage</b> = total weekly usage / 7<br><b>projected monthly usage</b> = average daily usage &times; days in month</div>' +
+        '<h3>OUTPUT</h3><ul><li>Number of days in the selected month</li><li>Total weekly usage in GB</li><li>Projected monthly usage in GB</li><li>Warning if projected usage exceeds 20 GB</li></ul>' +
+        '<h3>EXAMPLE</h3>' + example('<p>A weekly total of 5.3 GB in a 30-day month projects to (5.3 / 7) &times; 30 = ' + fmt(mobExProjected) + ' GB, which exceeds 20 GB.</p>'),
       explain:
-        '<h3>ASSUMPTION FROM THE DOCUMENT</h3>' +
-        source('<p>Assumption: a month is 4 weeks, so the weekly limit works out to 5 GB. Exactly 20 GB projected counts as not exceeded.</p>') +
-        '<h3>INPUT VALIDATION</h3><p>Each day uses a <code>REPEAT &hellip; UNTIL</code> loop. If the value is not a number or is below 0, the error is displayed and the same day is asked again. The loop only ends once a number of 0 or more is entered, so only valid values are added to <code>total</code>.</p>' +
-        '<h3>PROJECTION</h3><p>After 7 valid days, <code>total</code> is the weekly usage. Multiplying by 4 gives <code>projected_monthly</code>, which is compared with 20 using <code>&gt;</code>. That is why exactly 20 GB counts as not exceeded.</p>' +
+        '<h3>MONTH AND YEAR VALIDATION</h3><p>The month must be a whole number from 1 to 12. If the selected month is February, the program also asks for a whole-number year. A leap year is divisible by 400, or divisible by 4 but not by 100. February then has 29 days in a leap year and 28 otherwise.</p>' +
+        '<h3>DAYS IN OTHER MONTHS</h3><ul><li>April, June, September and November have 30 days.</li><li>The remaining months have 31 days.</li></ul>' +
+        '<h3>SEVEN-DAY INPUT LOOP</h3><p>The program asks for seven daily usage values. If a value is negative, it displays an error and asks for that same day again. The day counter advances only after a non-negative value is added to the total.</p>' +
+        '<h3>MONTHLY ESTIMATE</h3><p>After seven valid values, the program calculates the average daily usage as <code>total / 7</code>, then multiplies that average by the number of days in the selected month. The estimate is compared with the 20 GB limit. Only a result greater than 20 GB triggers the warning.</p>' +
         '<h3>WORKED EXAMPLE</h3>' +
-        '<pre class="calc">total             = 5.3 GB\nprojected_monthly = 5.3 &times; 4 = ' + fmt(mobEx) + ' GB\n' + fmt(mobEx) + ' &gt; 20  &rarr;  "Monthly limit may be exceeded"</pre>',
-      chartNote: 'The REPEAT … UNTIL loop is drawn as one decision: the IF and the UNTIL test the same condition, so an invalid value shows the error and returns to INPUT usage, and a valid value continues.'
+        '<pre class="calc">weekly total       = 5.3 GB\naverage per day    = 5.3 / 7 = 0.7571 GB\nmonth length       = 30 days\nprojected usage    = 0.7571 &times; 30\n                   = ' + fmt(mobExProjected) + ' GB\n' + fmt(mobExProjected) + ' &gt; 20 GB  &rarr; warning</pre>',
+      chartNote: 'For February, the chart checks the year and applies the leap-year rule. The seven-day loop repeats the same day after negative usage, then projects average daily usage across the selected month.'
     }
   ];
   var APP_BY_ID = {};
   APPS.forEach(function (a) { APP_BY_ID[a.id] = a; });
-  var TABS = ['Problem', 'Pseudocode', 'Explanation', 'Flowchart', 'Try it'];
+  var TABS = ['Problem', 'Pseudocode', 'Code', 'Explanation', 'Flowchart', 'Try it'];
 
   /* ------------------------------------------------------------------
      Extra pixel art for the operating system
@@ -643,11 +812,11 @@
     $('#binSlot').innerHTML = iconButton(SPEC.bin, 'icon--file icon--bin');
   }
 
-  /* CRT screen cycles through short, verbatim lines from each program */
+  /* CRT screen cycles through snippets from the latest project algorithms. */
   var CRT_SNIPPETS = [
-    ['C:\\ALGO> TYPE COMPOUND.TXT', PSEUDO.ci[10], PSEUDO.ci[12], PSEUDO.ci[13], '', ''],
-    ['C:\\ALGO> TYPE KAPREKAR.TXT', PSEUDO.kap[7], PSEUDO.kap[9], PSEUDO.kap[11], PSEUDO.kap[12], PSEUDO.kap[14]],
-    ['C:\\ALGO> TYPE MOBDATA.TXT', PSEUDO.mob[1], PSEUDO.mob[2], PSEUDO.mob[9], PSEUDO.mob[11], PSEUDO.mob[14]]
+    ['C:\\ALGO> TYPE COMPOUND.TXT', 'amount = principal * (1 + rate / 100) ** time', 'interest = amount - principal', 'DISPLAY final amount', 'DISPLAY compound interest'],
+    ['C:\\ALGO> TYPE KAPREKAR.TXT', 'square = n * n', 'digits = count_digits(square)', 'divider = 10 ** i', 'left = square // divider'],
+    ['C:\\ALGO> TYPE MOBDATA.TXT', 'projected = total / 7 * days', 'DISPLAY month length', 'DISPLAY weekly total', 'IF projected > LIMIT']
   ];
   var crtIndex = 0;
   function showCRT(i) {
@@ -662,10 +831,10 @@
   var STATUS_MSGS = [
     'Compounding annually OK',
     'Splitting n² ....... OK',
-    'Checking 20 GB limit OK',
+    'Projecting selected month OK',
     'Drawing flowcharts . OK',
     'Phosphor at 98% .... OK',
-    'Counting days 1-7 .. OK'
+    'Checking calendar days .. OK'
   ];
   var statusIndex = 0, ambientTimer = null;
   function startAmbient() {
@@ -709,11 +878,11 @@
   /* Tip of the day */
   var TIPS = [
     'Click any program in the PROGRAMS dock to open it.',
-    'Each program has five tabs: Problem, Pseudocode, Explanation, Flowchart and Try it.',
+    'Each program has six tabs: Problem, Pseudocode, Code, Explanation, Flowchart and Try it.',
     'Drag a window by its title bar. Drag the corner grip to resize it.',
     'Double-click a title bar to enlarge a window. Press Esc to close the front window.',
     'In KAPREKAR.EXE, open Try it and enter 297. 297 squared is 88209, and 88 + 209 = 297.',
-    'In MOBDATA.EXE, a projection of exactly 20 GB counts as not exceeded.',
+    'In MOBDATA.EXE, choose a month. February also asks for a year to check leap years.',
     'The CRT on the desk is a terminal. Click its screen and type help.',
     'Every open window has a button on the taskbar, so nothing gets lost.'
   ];
@@ -819,92 +988,118 @@
     var p = parseNumber(pS), r = parseNumber(rS), t = parseNumber(tS), out = [];
     out.push(outLine('CALL calculate_compound_interest(' + esc(String(pS).trim() || '""') + ', ' + esc(String(rS).trim() || '""') + ', ' + esc(String(tS).trim() || '""') + ')', 'dim'));
     if (isNaN(p) || isNaN(r) || isNaN(t)) {
-      out.push(outLine('line 2: an input is not a number → THEN', 'dim'));
-      out.push(outLine('DISPLAY "Error: inputs must be numbers"', 'err'));
-      out.push(outLine('RETURN NULL', 'ret'));
+      out.push(outLine('The value entered could not be converted to a number before the function call.', 'err'));
       return out.join('');
     }
-    out.push(outLine('line 2: all inputs are numbers → skip', 'dim'));
-    if (p < 0 || r < 0 || t < 0) {
-      out.push(outLine('line 6: an input is below 0 → THEN', 'dim'));
-      out.push(outLine('DISPLAY "Error: inputs cannot be negative"', 'err'));
-      out.push(outLine('RETURN NULL', 'ret'));
-      return out.join('');
-    }
-    out.push(outLine('line 6: no input is below 0 → skip', 'dim'));
-    var amount = p * Math.pow(1 + r / 100, t), interest = amount - p;
-    if (!isFinite(amount)) {
-      out.push(outLine('The amount is too large for this demo to display.', 'err'));
-      return out.join('');
-    }
-    out.push(outLine('amount   <- ' + show(p) + ' * (1 + ' + show(r, 6) + ' / 100) ^ ' + show(t, 6) + ' = ' + show(amount)));
-    out.push(outLine('interest <- ' + show(amount) + ' - ' + show(p) + ' = ' + show(interest)));
-    out.push(outLine('RETURN ' + show(interest), 'ret'));
-    out.push(outLine('Values are shown to 2 decimal places.', 'dim'));
+    if (p <= 0) { out.push(outLine('IF principal <= 0 → TRUE', 'dim')); out.push(outLine('Error: principal must be greater than 0.', 'err')); return out.join(''); }
+    out.push(outLine('principal > 0 → continue', 'dim'));
+    if (r < 0) { out.push(outLine('ELSE IF rate < 0 → TRUE', 'dim')); out.push(outLine('Error: rate cannot be negative.', 'err')); return out.join(''); }
+    out.push(outLine('rate >= 0 → continue', 'dim'));
+    if (t <= 0) { out.push(outLine('ELSE IF time <= 0 → TRUE', 'dim')); out.push(outLine('Error: time must be greater than 0.', 'err')); return out.join(''); }
+    out.push(outLine('time > 0 → continue', 'dim'));
+    var result = compoundInterest(p, r, t);
+    if (result.error) { out.push(outLine(result.error, 'err')); return out.join(''); }
+    if (!isFinite(result.amount)) { out.push(outLine('The final amount is too large for this demo to display.', 'err')); return out.join(''); }
+    out.push(outLine('amount = ' + show(p) + ' * (1 + ' + show(r, 6) + ' / 100) ** ' + show(t, 6) + ' = ' + show(result.amount)));
+    out.push(outLine('interest = ' + show(result.amount) + ' - ' + show(p) + ' = ' + show(result.interest)));
+    out.push(outLine('Final amount: ' + show(result.amount), 'ok'));
+    out.push(outLine('Compound interest: ' + show(result.interest), 'ret'));
     return out.join('');
   }
 
   function runKaprekar(nS) {
     var raw = String(nS).trim(), v = parseNumber(raw), out = [];
-    out.push(outLine('INPUT n = ' + esc(raw || '""'), 'dim'));
+    out.push(outLine('INPUT n = ' + esc(raw || '(blank)'), 'dim'));
     if (isNaN(v) || !Number.isInteger(v) || v <= 0) {
-      out.push(outLine('n is not an integer OR n <= 0 → THEN', 'dim'));
-      out.push(outLine('PRINT "Error: Input must be a positive integer"', 'err'));
-      return { html: out.join('') };
+      out.push(outLine('n <= 0 OR n % 1 != 0 → TRUE', 'dim'));
+      out.push(outLine('Error: input must be a positive integer.', 'err'));
+      return { html: out.join(''), table: '' };
     }
     if (v > 94906265) {
-      out.push(outLine('This demo can check n up to 94,906,265.', 'err'));
-      return { html: out.join('') };
+      out.push(outLine('This interactive trace is limited to n <= 94,906,265 so n * n stays within the safe integer range.', 'err'));
+      return { html: out.join(''), table: '' };
     }
     var k = kapCalc(v);
     out.push(outLine('square = ' + v + ' * ' + v + ' = ' + k.sq));
-    out.push(outLine('digits = ' + k.digits));
-    out.push(outLine('divisor = 10 ^ ' + k.digits + ' = ' + k.div));
-    out.push(outLine('left = ' + k.sq + ' DIV ' + k.div + ' = ' + k.left));
-    out.push(outLine('right = ' + k.sq + ' MOD ' + k.div + ' = ' + k.right));
-    out.push(outLine('left + right = ' + k.sum + (k.ok ? ' = ' : ' ≠ ') + v, 'dim'));
-    out.push(outLine('PRINT ' + v + ', "' + (k.ok ? 'is a Kaprekar number' : 'is not a Kaprekar number') + '"', k.ok ? 'ok' : 'err'));
-    return { html: out.join(''), table: '' };
+    out.push(outLine('digits = count_digits(square) = ' + k.digits));
+    k.rows.forEach(function (r) {
+      out.push(outLine('i = ' + r.i + ' · divider = 10 ** ' + r.i + ' = ' + r.divider));
+      out.push(outLine('left = ' + k.sq + ' // ' + r.divider + ' = ' + r.left));
+      out.push(outLine('right = ' + k.sq + ' % ' + r.divider + ' = ' + r.right));
+      out.push(outLine('right > 0 AND left + right == n → ' + (r.ok ? 'TRUE' : 'FALSE'), r.ok ? 'ok' : 'dim'));
+      if (r.ok) out.push(outLine('isKaprekar = TRUE · stop checking further splits', 'ok'));
+    });
+    out.push(outLine(k.found ? v + ' is a Kaprekar number' : v + ' is not a Kaprekar number', k.found ? 'ok' : 'err'));
+    return { html: out.join(''), table: kapTrace(v) };
   }
 
-  function runMobile(values) {
-    var out = [], total = 0;
-    out.push(outLine('total <- 0', 'dim'));
+  function daysInMonth(month, year) {
+    if (month === 2) {
+      var leap = year % 400 === 0 || (year % 4 === 0 && year % 100 !== 0);
+      return leap ? 29 : 28;
+    }
+    if (month === 4 || month === 6 || month === 9 || month === 11) return 30;
+    return 31;
+  }
+
+  function runMobile(monthS, yearS, values) {
+    var out = [], total = 0, month = parseNumber(monthS), year = null, days;
+    out.push(outLine('LIMIT = 20 GB', 'dim'));
+    if (isNaN(month) || !Number.isInteger(month) || month < 1 || month > 12) {
+      out.push(outLine('Error: month must be a whole number from 1 to 12.', 'err'));
+      return { html: out.join(''), badField: 'month', bad: -1 };
+    }
+    out.push(outLine('month = ' + month, 'dim'));
+    if (month === 2) {
+      year = parseNumber(yearS);
+      if (isNaN(year) || !Number.isInteger(year) || year < 1) {
+        out.push(outLine('Error: year must be a whole number, 1 or more.', 'err'));
+        return { html: out.join(''), badField: 'year', bad: -1 };
+      }
+      var leap = year % 400 === 0 || (year % 4 === 0 && year % 100 !== 0);
+      out.push(outLine('year = ' + year + ' · leap year = ' + leap, 'dim'));
+    }
+    days = daysInMonth(month, year || 2001);
+    out.push(outLine('Month has ' + days + ' days', 'dim'));
     for (var d = 0; d < 7; d++) {
       var u = parseNumber(values[d]);
       if (isNaN(u) || u < 0) {
-        out.push(outLine('Day ' + (d + 1) + ': INPUT usage = ' + esc(String(values[d]).trim() || '(blank)'), 'dim'));
-        out.push(outLine('DISPLAY "Error: enter a number of 0 GB or more"', 'err'));
-        out.push(outLine('REPEAT asks for day ' + (d + 1) + ' again. Fix the value and run again.', 'dim'));
-        return { html: out.join(''), bad: d };
+        out.push(outLine('Day ' + (d + 1) + ': invalid usage = ' + esc(String(values[d]).trim() || '(blank)'), 'dim'));
+        out.push(outLine('Error: usage cannot be negative or blank. Try again for the same day.', 'err'));
+        return { html: out.join(''), badField: 'day', bad: d };
       }
       total += u;
+      out.push(outLine('Day ' + (d + 1) + ' accepted: ' + show(u, 4) + ' GB', 'dim'));
     }
     total = Number(total.toFixed(10));
-    var projected = Number((total * 4).toFixed(10));
-    out.push(outLine('7 valid values entered · total <- ' + show(total, 4), 'dim'));
-    out.push(outLine('projected_monthly <- ' + show(total, 4) + ' * 4 = ' + show(projected, 4), 'dim'));
-    out.push(outLine('Weekly usage: ' + show(total, 4) + ' GB', 'ok'));
+    var average = total / 7;
+    var projected = Number((average * days).toFixed(10));
+    out.push(outLine('Total weekly usage: ' + show(total, 4) + ' GB', 'ok'));
+    out.push(outLine('Average daily usage = ' + show(total, 4) + ' / 7 = ' + show(average, 4) + ' GB', 'dim'));
+    out.push(outLine('Projected monthly usage = ' + show(average, 4) + ' * ' + days + ' = ' + show(projected, 4) + ' GB', 'dim'));
     out.push(outLine('Projected monthly usage: ' + show(projected, 4) + ' GB', 'ok'));
-    out.push(outLine(projected > 20 ? 'Monthly limit may be exceeded' : 'Monthly limit is not expected to be exceeded', projected > 20 ? 'err' : 'ret'));
-    out.push(outLine('Sums are rounded to 10 decimal places to avoid floating-point noise.', 'dim'));
-    return { html: out.join(''), bad: -1 };
+    if (projected > 20) {
+      out.push(outLine('Warning: you may exceed the 20 GB limit by about ' + show(projected - 20, 4) + ' GB.', 'err'));
+    } else {
+      out.push(outLine('You are within the 20 GB limit.', 'ret'));
+    }
+    return { html: out.join(''), badField: '', bad: -1 };
   }
 
   var MOB_SAMPLE = ['0.8', '0.7', '0.9', '0.6', '0.8', '0.7', '0.8'];
   function demoHTML(id) {
-    var note = '<p class="demo-note">Optional. This runs the pseudocode from the Pseudocode tab with your own values. It does not change the project content.</p>';
+    var note = '<p class="demo-note">Optional interactive demonstration of the supplied program logic. Change the inputs and press RUN.</p>';
     if (id === 'ci') {
       return '<div class="panel panel--wide demo"><h3>TRY IT</h3>' + note +
         '<form class="demo-form" data-demo="ci" autocomplete="off">' +
         '<label for="ci-p">principal<input id="ci-p" name="p" value="10000" inputmode="decimal"></label>' +
-        '<label for="ci-r">rate<input id="ci-r" name="r" value="10" inputmode="decimal"></label>' +
-        '<label for="ci-t">time<input id="ci-t" name="t" value="2" inputmode="decimal"></label>' +
+        '<label for="ci-r">rate (%)<input id="ci-r" name="r" value="10" inputmode="decimal"></label>' +
+        '<label for="ci-t">time (years)<input id="ci-t" name="t" value="2" inputmode="decimal"></label>' +
         '<button type="submit" class="pxbtn pxbtn--sm pxbtn--cyan">RUN</button></form>' +
         '<div class="presets" role="group" aria-label="Example inputs"><span>Examples:</span>' +
         '<button type="button" class="chip-btn" data-preset="10000|10|2">Document example</button>' +
-        '<button type="button" class="chip-btn" data-preset="abc|10|2">Not a number</button>' +
-        '<button type="button" class="chip-btn" data-preset="-500|10|2">Negative input</button>' +
+        '<button type="button" class="chip-btn" data-preset="0|10|2">Zero principal</button>' +
+        '<button type="button" class="chip-btn" data-preset="10000|-1|2">Negative rate</button>' +
         '<button type="button" class="chip-btn" data-preset="5000|0|3">Rate of 0</button></div>' +
         '<div class="demo-out" aria-live="polite"></div></div>';
     }
@@ -913,44 +1108,66 @@
         '<form class="demo-form" data-demo="kap" autocomplete="off">' +
         '<label for="kap-n">n<input id="kap-n" name="n" value="45" inputmode="numeric"></label>' +
         '<button type="submit" class="pxbtn pxbtn--sm pxbtn--cyan">RUN</button></form>' +
-        '<div class="presets" role="group" aria-label="Example inputs"><span>From the document:</span>' +
-        ['45', '297', '9', '10', '100', '1'].map(function (v) { return '<button type="button" class="chip-btn" data-preset="' + v + '">' + v + '</button>'; }).join('') +
-        '<button type="button" class="chip-btn" data-preset="4.5">4.5</button></div>' +
+        '<div class="presets" role="group" aria-label="Example inputs"><span>Examples:</span>' +
+        ['45', '297', '4879', '10', '1'].map(function (v) { return '<button type="button" class="chip-btn" data-preset="' + v + '">' + v + '</button>'; }).join('') +
+        '<button type="button" class="chip-btn" data-preset="4.5">4.5 (invalid)</button></div>' +
         '<div class="demo-out" aria-live="polite"></div><div class="demo-table"></div></div>';
     }
     return '<div class="panel panel--wide demo"><h3>TRY IT</h3>' + note +
       '<form class="demo-form demo-form--days" data-demo="mob" autocomplete="off">' +
-      MOB_SAMPLE.map(function (v, i) { return '<label for="mob-d' + i + '">Day ' + (i + 1) + '<input id="mob-d' + i + '" name="d' + i + '" value="' + v + '" inputmode="decimal"></label>'; }).join('') +
+      '<label for="mob-month">month (1–12)<input id="mob-month" name="month" value="11" inputmode="numeric"></label>' +
+      '<label for="mob-year">year (February only)<input id="mob-year" name="year" value="2026" inputmode="numeric"></label>' +
+      MOB_SAMPLE.map(function (v, i) { return '<label for="mob-d' + i + '">Day ' + (i + 1) + ' (GB)<input id="mob-d' + i + '" name="d' + i + '" value="' + v + '" inputmode="decimal"></label>'; }).join('') +
       '<button type="submit" class="pxbtn pxbtn--sm pxbtn--cyan">RUN</button></form>' +
       '<div class="presets" role="group" aria-label="Example inputs"><span>Examples:</span>' +
-      '<button type="button" class="chip-btn" data-preset="' + MOB_SAMPLE.join('|') + '">Week totalling 5.3 GB</button>' +
-      '<button type="button" class="chip-btn" data-preset="1|0.5|0.5|1|0.5|0.5|1">Week totalling 5 GB</button>' +
-      '<button type="button" class="chip-btn" data-preset="0.8|0.7|abc|0.6|0.8|0.7|0.8">An invalid value</button>' +
-      '<button type="button" class="chip-btn" data-preset="||||||">Clear</button></div>' +
-      '<p class="demo-note">The 5.3 GB total matches the document&rsquo;s example. The daily split is a sample, since the document gives only the weekly total.</p>' +
+      '<button type="button" class="chip-btn" data-preset="11|2026|' + MOB_SAMPLE.join('|') + '">November · 30 days</button>' +
+      '<button type="button" class="chip-btn" data-preset="2|2024|' + MOB_SAMPLE.join('|') + '">February 2024 · leap year</button>' +
+      '<button type="button" class="chip-btn" data-preset="2|2025|' + MOB_SAMPLE.join('|') + '">February 2025 · 28 days</button>' +
+      '<button type="button" class="chip-btn" data-preset="11|2026|0.8|0.7|abc|0.6|0.8|0.7|0.8">Invalid daily value</button></div>' +
+      '<p class="demo-note">The monthly estimate uses average daily usage multiplied by the actual number of days in the selected month.</p>' +
       '<div class="demo-out" aria-live="polite"></div></div>';
   }
+
   function bindDemo(id, body) {
     var form = body.querySelector('.demo-form');
     if (!form) return;
     var outEl = body.querySelector('.demo-out');
     var run = function () {
       if (id === 'ci') outEl.innerHTML = runCompound(form.p.value, form.r.value, form.t.value);
-      else if (id === 'kap') { var k = runKaprekar(form.n.value); outEl.innerHTML = k.html; body.querySelector('.demo-table').innerHTML = k.table || ''; }
-      else {
+      else if (id === 'kap') {
+        var k = runKaprekar(form.n.value);
+        outEl.innerHTML = k.html;
+        body.querySelector('.demo-table').innerHTML = k.table || '';
+      } else {
         var vals = [0, 1, 2, 3, 4, 5, 6].map(function (i) { return form['d' + i].value; });
-        var m = runMobile(vals);
+        var m = runMobile(form.month.value, form.year.value, vals);
         outEl.innerHTML = m.html;
-        form.querySelectorAll('input').forEach(function (inp, i) { inp.setAttribute('aria-invalid', String(i === m.bad)); });
-        if (m.bad >= 0) form['d' + m.bad].focus();
+        form.querySelectorAll('input').forEach(function (inp) {
+          inp.removeAttribute('aria-invalid');
+        });
+        if (m.badField === 'month') form.month.setAttribute('aria-invalid', 'true');
+        if (m.badField === 'year') form.year.setAttribute('aria-invalid', 'true');
+        if (m.badField === 'day' && m.bad >= 0) {
+          form['d' + m.bad].setAttribute('aria-invalid', 'true');
+          form['d' + m.bad].focus();
+        } else if (m.badField === 'month') form.month.focus();
+        else if (m.badField === 'year') form.year.focus();
       }
       blip(1320, 0.04);
     };
     form.addEventListener('submit', function (e) { e.preventDefault(); run(); });
+    if (id === 'mob') {
+      var monthInput = form.month;
+      var yearInput = form.year;
+      var syncYear = function () { yearInput.disabled = String(monthInput.value) !== '2'; };
+      monthInput.addEventListener('input', syncYear);
+      syncYear();
+    }
     body.querySelectorAll('[data-preset]').forEach(function (b) {
       b.addEventListener('click', function () {
         var vals = b.dataset.preset.split('|');
         form.querySelectorAll('input').forEach(function (inp, i) { inp.value = vals[i] != null ? vals[i] : ''; });
+        if (id === 'mob') form.year.disabled = String(form.month.value) !== '2';
         run();
       });
     });
@@ -963,13 +1180,13 @@
   var FILES = [
     { id: 'ci', type: 'Program', desc: 'Returns the compound interest (A − P) for annual compounding, or shows an error if any input is invalid.' },
     { id: 'kap', type: 'Program', desc: 'Squares n, splits the square into two parts and checks that left + right = n.' },
-    { id: 'mob', type: 'Program', desc: 'Takes 7 daily values, adds them into the weekly total, and projects the month as 4 weeks of that usage against the 20 GB limit.' },
+    { id: 'mob', type: 'Program', desc: 'Accepts a month, a February year when needed, and 7 daily data values; projects average daily usage across the actual month length against 20 GB.' },
     { id: 'readme', type: 'Text document', desc: 'A short tour of this desktop and how to get around it.' },
     { id: 'help', type: 'Help file', desc: 'Window controls, flowchart symbols, pseudocode colours and terminal commands.' },
     { id: 'term', type: 'Program', desc: 'A command line. Type help for the list of commands.' },
-    { id: 'source', type: 'PDF document', desc: 'Programming Project: Pseudocode (Corrected) · Oct 28, 2026 · @Varnika · 3 pages. The Kaprekar pseudocode and all three flowcharts were supplied separately.' }
+    { id: 'source', type: 'Project source', desc: 'Current EW5 Python code, pseudocode and the three supplied flowcharts used by this dashboard.' }
   ];
-  function fileName(f) { return f.id === 'source' ? 'PSEUDOCODE.PDF' : SPEC[f.id].exe; }
+  function fileName(f) { return f.id === 'source' ? 'IAP_PROJECT_WAS_E5.FILES' : SPEC[f.id].exe; }
   function fileIcon(f) { return f.id === 'source' ? ICONS.pdf : SPEC[f.id].iconSVG(); }
 
   function docHTML(id) {
@@ -988,14 +1205,14 @@
         '<h3>OPEN A PROGRAM</h3><ul>' +
         '<li>Click an icon in the <strong>PROGRAMS</strong> dock: Compound Interest, Kaprekar Number or Mobile Data Usage.</li>' +
         '<li>You can also use the <strong>START</strong> menu, the quick-launch icons on the taskbar, or the SYSMON panel.</li>' +
-        '<li>Inside a program, use the tabs. <strong>Try it</strong> runs the pseudocode with your own values.</li></ul>' +
+        '<li>Inside a program, use the tabs: Problem, Pseudocode, Code, Explanation, Flowchart and Try it.</li>' + '<li><strong>Try it</strong> runs an interactive demonstration with your own values.</li></ul>' +
         '<h3>MOVE AROUND</h3><ul>' +
         '<li>Drag a window by its title bar. Drag the striped corner to resize it.</li>' +
         '<li>Use the title-bar buttons to minimise, enlarge or close a window. Double-clicking the title bar also enlarges it.</li>' +
         '<li>Press <kbd>Esc</kbd> to close the front window. Taskbar buttons bring back minimised windows.</li>' +
         '<li>The ⌂ button on the taskbar clears the desktop. The ◂ DESKTOP button in each window closes it.</li></ul>' +
         '<h3>ABOUT THE CONTENT</h3>' +
-        '<p>Problem statements, pseudocode, formulas and examples come from <em>Programming Project: Pseudocode (Corrected)</em>, Oct 28, 2026, by @Varnika. The Kaprekar pseudocode and the flowcharts are the latest versions supplied by @Varnika.</p>' +
+        '<p>The project workspace contains the latest supplied EW5 problem statements, pseudocode, Python code and flowcharts. Open each application and use its six tabs to explore the material.</p>' +
         '</div></div>';
     }
     if (id === 'help') {
@@ -1023,7 +1240,7 @@
     return '<div class="bin">' + (binEmpty
       ? '<div class="bin-empty">' + ICONS.binEmpty + '<p>The Recycle Bin is empty.</p></div>'
       : '<ul class="bin-list"><li class="bin-item">' + ICONS.readme + '<div><p class="bin-name">ANY_SPLIT.OLD</p>' +
-        '<p>An earlier Kaprekar approach that tried every way of splitting n&sup2;. The current version replaced it with one split based on the digit count of n.</p></div></li></ul>') +
+        '<p>An earlier Kaprekar approach used one fixed split based on the digit count of n. The current version checks successive right-part lengths using the number of digits in n squared.</p></div></li></ul>') +
       '<div class="bin-actions"><button type="button" class="pxbtn pxbtn--sm" data-act="empty-bin"' + (binEmpty ? ' disabled' : '') + '>EMPTY RECYCLE BIN</button></div></div>';
   }
 
@@ -1033,7 +1250,7 @@
     ['open <name>', 'Open compound, kaprekar, mobdata, readme, help, project or bin'],
     ['ci <principal> <rate> <time>', 'Run calculate_compound_interest'],
     ['kaprekar <n>', 'Run kaprekar_number'],
-    ['mobdata <7 values>', 'Run the mobile data program for one week'],
+    ['mobdata <month> [year] <7 values>', 'Run the month-aware mobile data program'],
     ['ver', 'Show the system version'],
     ['date', 'Show the date and time'],
     ['cls', 'Clear the screen'],
@@ -1064,8 +1281,11 @@
       print(stripTags(runKaprekar(args[0]).html)); return;
     }
     if (cmd === 'mobdata' || cmd === 'mob') {
-      if (args.length !== 7) { print('Usage: mobdata followed by 7 daily values    e.g. mobdata 0.8 0.7 0.9 0.6 0.8 0.7 0.8'); return; }
-      print(stripTags(runMobile(args).html)); return;
+      var monthArg = args[0], monthNum = parseNumber(monthArg), yearArg = null, valueStart = 1;
+      if (monthNum === 2) { yearArg = args[1]; valueStart = 2; }
+      var dayArgs = args.slice(valueStart);
+      if (dayArgs.length !== 7) { print('Usage: mobdata <month> [year for February] <7 daily values>    e.g. mobdata 11 0.8 0.7 0.9 0.6 0.8 0.7 0.8'); return; }
+      print(stripTags(runMobile(monthArg, yearArg, dayArgs).html)); return;
     }
     print('Bad command or file name. Type help for the list of commands.');
   }
@@ -1133,32 +1353,44 @@
 
   function panelHTML(app, idx) {
     if (idx === 0) return '<div class="panel">' + app.problem + '</div>';
-    if (idx === 2) return '<div class="panel">' + app.explain + '</div>';
-    if (idx === 4) return demoHTML(app.id);
+    if (idx === 3) return '<div class="panel">' + app.explain + '</div>';
+    if (idx === 5) return demoHTML(app.id);
     if (idx === 1) {
       var lines = PSEUDO[app.id];
       var code = lines.map(function (l, i) { return '<span class="ln">' + (i + 1) + '</span>' + highlight(l); }).join('\n');
       return '<div class="panel panel--wide"><div class="crt-frame">' +
-        '<div class="code-head"><span class="code-name">' + app.exe.replace('.EXE', '.TXT') + '</span>' +
-        '<button type="button" class="pxbtn pxbtn--sm pxbtn--cyan" data-act="copy">COPY</button></div>' +
+        '<div class="code-head"><span class="code-name">' + app.exe.replace('.EXE', '_PSEUDOCODE.TXT') + '</span>' +
+        '<button type="button" class="pxbtn pxbtn--sm pxbtn--cyan" data-act="copy" data-copy-source="pseudo">COPY</button></div>' +
         '<div class="code" tabindex="0" aria-label="Pseudocode for ' + app.name + '"><pre>' + code + '</pre></div>' +
-        '<div class="code-legend" aria-hidden="true"><span><i style="background:#51E5E0"></i>keyword</span><span><i style="background:#E98ABC"></i>assign &lt;-</span><span><i style="background:#FFB3D9"></i>text</span><span><i style="background:#FFD866"></i>number</span></div>' +
+        '<div class="code-legend" aria-hidden="true"><span><i style="background:#51E5E0"></i>keyword</span><span><i style="background:#E98ABC"></i>assignment / operator</span><span><i style="background:#FFB3D9"></i>text</span><span><i style="background:#FFD866"></i>number</span></div>' +
+        '</div></div>';
+    }
+    if (idx === 2) {
+      var pyLines = PYTHON[app.id].split('\n');
+      var pyHTML = pyLines.map(function (l, i) { return '<span class="ln">' + (i + 1) + '</span>' + highlightPython(l); }).join('\n');
+      return '<div class="panel panel--wide"><div class="crt-frame">' +
+        '<div class="code-head"><span class="code-name">' + app.exe.replace('.EXE', '.PY') + '</span>' +
+        '<button type="button" class="pxbtn pxbtn--sm pxbtn--cyan" data-act="copy" data-copy-source="python">COPY CODE</button></div>' +
+        '<div class="code code--python" tabindex="0" aria-label="Python code for ' + app.name + '"><pre>' + pyHTML + '</pre></div>' +
+        '<div class="code-legend" aria-hidden="true"><span><i style="background:#51E5E0"></i>keywords</span><span><i style="background:#FFB3D9"></i>strings</span><span><i style="background:#FFD866"></i>numbers</span><span><i style="background:#5CFF8A"></i>comments</span></div>' +
         '</div></div>';
     }
     var FIG = {
-      ci: 'Flowchart for compound interest. Start, input principal, rate and time. If principal, rate or time is below 0, print Invalid input and stop. Otherwise A = principal times (1 + rate/100) to the power time, CI = A minus principal, print CI, stop.',
-      kap: 'Flowchart for the Kaprekar number. Start, input n. If n is not a positive integer, print Invalid input and stop. Otherwise square n, split the square into left and right, sum = left + right. If sum equals n, print that n is a Kaprekar number, otherwise print that it is not. Stop.',
-      mob: 'Flowchart for mobile data usage. Start, input data usage for 7 days, total is D1 to D7, average daily usage is total over 7, estimated monthly usage is average times 30. If the estimate is above 20 GB display that the monthly limit may be exceeded, otherwise display that it may not be. End.'
+      ci: 'User-supplied compound-interest flowchart: input principal, rate and time; validate principal greater than zero, rate non-negative and time greater than zero; calculate amount and interest; display both results or show the relevant error.',
+      kap: 'User-supplied Kaprekar flowchart: validate a positive integer, square it, count the square digits, test successive divisors and splits, and display whether the number is Kaprekar.',
+      mob: 'User-supplied mobile-data flowchart: validate month and February year, determine the month length, accept seven non-negative daily usage values, project average daily usage across the month, and compare with the 20 GB limit.'
     };
     var w = wins[app.id];
     var zoom = (w && w.zoom) || (isNarrow() || (w && w.el.clientWidth < 720) ? 'zoom' : 'fit');
+    var chartFile = { ci: 'flowchart_compound_interest.jpg', kap: 'flowchart_kaprekar_number.jpg', mob: 'flowchart_mobile_data_usage.jpg' }[app.id];
     return '<div class="panel panel--wide"><div class="chart-head"><h3>FLOWCHART</h3>' +
       '<div class="seg" role="group" aria-label="Flowchart size">' +
       '<button type="button" class="seg-btn" data-act="zoom" data-zoom="fit" aria-pressed="' + (zoom === 'fit') + '">FIT</button>' +
       '<button type="button" class="seg-btn" data-act="zoom" data-zoom="zoom" aria-pressed="' + (zoom === 'zoom') + '">ZOOM</button>' +
       '<button type="button" class="seg-btn" data-act="max" aria-pressed="' + !!(w && w.el.classList.contains('is-max')) + '">ENLARGE</button></div></div>' +
-      '<div class="chart" data-zoom="' + zoom + '" tabindex="0" aria-label="Flowchart, scrollable">' +
-      '<img src="assets/flowchart-' + ({ ci: 1, kap: 2, mob: 3 })[app.id] + '.png" alt="' + esc(FIG[app.id]) + '" width="1024" height="1536"></div></div>';
+      '<div class="chart chart--source" data-zoom="' + zoom + '" tabindex="0" aria-label="Flowchart, scrollable">' +
+      '<img class="flowchart-source" src="assets/' + chartFile + '" alt="' + esc(FIG[app.id]) + '"></div>' +
+      (app.chartNote ? '<p class="chart-note">' + esc(app.chartNote) + '</p>' : '') + '</div>';
   }
 
   function buildWindow(spec) {
@@ -1178,7 +1410,7 @@
       '<button type="button" class="wbtn wbtn--close" data-act="close" aria-label="Close ' + esc(spec.exe) + '" title="Close (Esc)">' + GLYPH.close + '</button></div></header>';
     if (spec.kind === 'app') {
       html += '<div class="tabs" role="tablist" aria-label="' + spec.name + ' sections">' + TABS.map(function (t, i) {
-        return '<button type="button" class="tab' + (i === 4 ? ' tab--try' : '') + '" role="tab" id="tab-' + spec.id + '-' + i + '" aria-controls="panel-' + spec.id + '" aria-selected="' + (i === 0) + '" tabindex="' + (i === 0 ? 0 : -1) + '" data-tab="' + i + '">' + t.toUpperCase() + '</button>';
+        return '<button type="button" class="tab' + (i === 5 ? ' tab--try' : '') + '" role="tab" id="tab-' + spec.id + '-' + i + '" aria-controls="panel-' + spec.id + '" aria-selected="' + (i === 0) + '" tabindex="' + (i === 0 ? 0 : -1) + '" data-tab="' + i + '">' + t.toUpperCase() + '</button>';
       }).join('') + '</div>' +
         '<div class="win-body" role="tabpanel" id="panel-' + spec.id + '" aria-labelledby="tab-' + spec.id + '-0" tabindex="-1"></div>';
     } else {
@@ -1206,8 +1438,8 @@
     body.setAttribute('aria-labelledby', 'tab-' + id + '-' + idx);
     body.innerHTML = panelHTML(app, idx);
     body.scrollTop = 0;
-    if (idx === 4) bindDemo(id, body);
-    var extra = idx === 1 ? ' · ' + PSEUDO[id].length + ' LINES' : '';
+    if (idx === 5) bindDemo(id, body);
+    var extra = idx === 1 ? ' · ' + PSEUDO[id].length + ' LINES' : (idx === 2 ? ' · ' + PYTHON[id].split('\n').length + ' LINES' : '');
     w.el.querySelector('[data-status="tab"]').textContent = (idx + 1) + '/' + TABS.length + ' ' + TABS[idx].toUpperCase() + extra;
   }
 
@@ -1418,7 +1650,7 @@
   }
 
   function copyCode(id, btn) {
-    var text = PSEUDO[id].join('\n');
+    var text = btn.dataset.copySource === 'python' ? PYTHON[id] : PSEUDO[id].join('\n');
     var ok = function () { btn.textContent = 'COPIED'; setTimeout(function () { btn.textContent = 'COPY'; }, 1400); };
     var fallback = function () {
       var pre = wins[id] && wins[id].el.querySelector('.code pre');
