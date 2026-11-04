@@ -117,7 +117,6 @@
       '    CALCULATE interest = amount - principal',
       '    DISPLAY final amount',
       '    DISPLAY compound interest',
-      'END IF',
       'STOP'
     ],
     kap: [
@@ -140,14 +139,11 @@
       '            SET i = digits + 1  (this stops the loop early)',
       '        ELSE',
       '            SET i = i + 1',
-      '        END IF',
       '    END WHILE',
       '    IF isKaprekar == TRUE',
       '        DISPLAY n, "is a Kaprekar number"',
       '    ELSE',
       '        DISPLAY n, "is not a Kaprekar number"',
-      '    END IF',
-      'END IF',
       'STOP'
     ],
     mob: [
@@ -187,7 +183,6 @@
       '    DISPLAY "Warning: you may exceed the", LIMIT, "GB limit by about", (projected - LIMIT), "GB."',
       'ELSE',
       '    DISPLAY "You are within the", LIMIT, "GB limit."',
-      'END IF',
       'STOP'
     ]
   };
