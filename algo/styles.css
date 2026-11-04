@@ -1038,3 +1038,39 @@ svg { shape-rendering: crispEdges; }
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition: none !important; }
   .cursor, .cell .led { animation: none; }
 }
+
+/* ---------- EW5 update: Python code tab and supplied dark flowcharts ---------- */
+.tk-comment { color: #5CFF8A; }
+.tk-fn { color: #8EDBFF; }
+.code--python pre { white-space: pre; }
+.code--python { background-color: #09151D; }
+.chart--source {
+  background-color: #050916;
+  background-image: radial-gradient(rgba(81, 229, 224, .12) 1px, transparent 1.5px);
+  background-size: 8px 8px;
+  padding: 12px;
+}
+.chart--source .flowchart-source {
+  display: block;
+  width: 100%;
+  max-width: 540px;
+  height: auto;
+  margin: 0 auto;
+  background: #050916;
+  image-rendering: auto;
+  border: 1px solid rgba(81, 229, 224, .24);
+  box-shadow: 0 0 0 3px rgba(20, 42, 50, .65), 0 8px 22px rgba(0, 0, 0, .28);
+}
+.chart--source[data-zoom="zoom"] .flowchart-source {
+  width: 760px;
+  max-width: none;
+}
+.demo-form input:disabled {
+  opacity: .45;
+  background: #E7E3EA;
+  cursor: not-allowed;
+}
+@media (max-width: 760px) {
+  .chart--source[data-zoom="zoom"] .flowchart-source { width: 620px; }
+  .chart--source .flowchart-source { max-width: min(100%, 480px); }
+}
