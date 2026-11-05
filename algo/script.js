@@ -139,7 +139,6 @@
       '            SET i = digits + 1  (this stops the loop early)',
       '        ELSE',
       '            SET i = i + 1',
-      '    END WHILE',
       '    IF isKaprekar == TRUE',
       '        DISPLAY n, "is a Kaprekar number"',
       '    ELSE',
